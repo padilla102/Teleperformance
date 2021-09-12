@@ -24,7 +24,9 @@ namespace Teleperformance.Registration.Infrastruture.Data
                         SecondName = "Joseph",
                         FirstLastname = "Wayne",
                         SecondLastname = "Smith",
-                        Email = "Bruce.Wayne@gmail.com"
+                        Email = "Bruce.Wayne@gmail.com",
+                        SendMessage=true,
+                        SendEmail=true
                     },
                     new Company{
                         IdentificationType = 1,
@@ -34,7 +36,9 @@ namespace Teleperformance.Registration.Infrastruture.Data
                         SecondName = "Joseph",
                         FirstLastname = "Kent",
                         SecondLastname = "Contreras",
-                        Email = "Clark.Kent@gmail.com"
+                        Email = "Clark.Kent@gmail.com",
+                        SendMessage=false,
+                        SendEmail=false
                     },
 
                 };

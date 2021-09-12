@@ -19,7 +19,8 @@ namespace Teleperformance.Registration.Domain.UseCase
         public async Task<bool> Handle(RegisterCompanyRequest message, IOutputPort<RegisterCompanyResponse> outputPort)
         {
             var response = await _companyRepository.Create(message);
-            outputPort.Handle(response.Success ? new RegisterCompanyResponse(response.Id, true) : new RegisterCompanyResponse(response.Error.Description));
+            outputPort.Handle(response.Success ? new RegisterCompanyResponse(response.Id, true) : 
+                new RegisterCompanyResponse(response.Error, response.Success));
             return response.Success;
         }
     }

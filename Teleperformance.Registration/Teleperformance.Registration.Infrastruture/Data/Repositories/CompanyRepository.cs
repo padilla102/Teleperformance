@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Teleperformance.Registration.Domain.Dto;
 using Teleperformance.Registration.Domain.Dto.GatewayResponses.Repositories;
@@ -11,14 +12,16 @@ namespace Teleperformance.Registration.Infrastruture.Data.Repositories
 {
     public class CompanyRepository : EfRepository<Company>, ICompanyRepository
     {
-        public CompanyRepository(AppDbContext appDbContext) : base(appDbContext)
+        private readonly IMapper _mapper;
+        public CompanyRepository(AppDbContext appDbContext, IMapper mapper) : base(appDbContext)
         {
+            _mapper = mapper;
         }
         public async Task<CreateCompanyResponse> Create(RegisterCompanyRequest request)
         {
             try
             {
-                var company = new Company
+                Company company = new Company
                 {
                     IdentificationType = request.IdentificationType,
                     IdentificationNumber = request.IdentificationNumber,
@@ -27,7 +30,9 @@ namespace Teleperformance.Registration.Infrastruture.Data.Repositories
                     SecondName = request.SecondName,
                     FirstLastname = request.FirstLastname,
                     SecondLastname = request.SecondLastname,
-                    Email = request.Email
+                    Email = request.Email,
+                    SendMessage = request.SendMessage,
+                    SendEmail = request.SendEmail
                 };
                 _appDbContext.Companies.Add(company);
 
@@ -45,7 +50,7 @@ namespace Teleperformance.Registration.Infrastruture.Data.Repositories
         public async Task<FindCompanyResponse> FindByIdentification(string identificationNumber)
         {
             var company = await _appDbContext.Companies.FirstOrDefaultAsync(c => c.IdentificationNumber == identificationNumber);
-            return new FindCompanyResponse(company, true, new Error("0", ""));
+            return company == null ? null : new FindCompanyResponse(company, true, new Error("0", ""));
         }
 
         public async Task<UpdateCompanyResponse> Update(UpdateCompanyRequest request)
@@ -54,14 +59,16 @@ namespace Teleperformance.Registration.Infrastruture.Data.Repositories
             {
                 var company = await _appDbContext.Companies.FirstOrDefaultAsync(c => c.Id == request.Id).ConfigureAwait(false);
 
-                //company.IdentificationType = request.Company.IdentificationType,
-                //company.IdentificationNumber = request.Company.IdentificationNumber,
+                company.IdentificationType = request.Company.IdentificationType;
+                company.IdentificationNumber = request.Company.IdentificationNumber;
                 company.CompanyName = request.Company.CompanyName;
                 company.FirstName = request.Company.FirstName;
                 company.SecondName = request.Company.SecondName;
                 company.FirstLastname = request.Company.FirstLastname;
                 company.SecondLastname = request.Company.SecondLastname;
                 company.Email = request.Company.Email;
+                company.SendMessage = request.Company.SendMessage;
+                company.SendEmail = request.Company.SendEmail;
 
                 await _appDbContext.SaveChangesAsync().ConfigureAwait(false);
 
@@ -69,7 +76,7 @@ namespace Teleperformance.Registration.Infrastruture.Data.Repositories
             }
             catch (Exception e)
             {
-                return new UpdateCompanyResponse(request.Company, false, new Error(e.TargetSite.Name, e.Message));
+                return new UpdateCompanyResponse(_mapper.Map<Company>(request.Company), false, new Error(e.TargetSite.Name, e.Message));
             }
         }
     }

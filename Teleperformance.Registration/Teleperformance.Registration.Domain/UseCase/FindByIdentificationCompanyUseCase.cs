@@ -19,8 +19,16 @@ namespace Teleperformance.Registration.Domain.UseCase
         public async Task<bool> Handle(FindByIdentificationCompanyRequest message, IOutputPort<FindByIdentificationCompanyResponse> outputPort)
         {
             var response = await _companyRepository.FindByIdentification(message.IdentificationNumber);
-            outputPort.Handle(response.Success ? new FindByIdentificationCompanyResponse(response.Company, true) : 
-                new FindByIdentificationCompanyResponse(response.Error));
+
+            if (response == null)
+            {
+                outputPort.Handle(new FindByIdentificationCompanyResponse(new Dto.Error("Registro_No_Encontrado","La identificación de la empresa no esta registrada")));
+
+                return false;
+            }
+
+            outputPort.Handle(new FindByIdentificationCompanyResponse(response.Company, true));
+
             return response.Success;
         }
     }

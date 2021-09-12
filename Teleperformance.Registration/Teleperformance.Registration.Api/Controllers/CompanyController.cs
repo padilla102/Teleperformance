@@ -62,13 +62,15 @@ namespace Teleperformance.Registration.Api.Controllers
                 request.SecondName,
                 request.FirstLastname,
                 request.SecondLastname,
-                request.Email), _registerCompanyPresenter);
+                request.Email,
+                request.SendMessage,
+                request.SendEmail), _registerCompanyPresenter);
 
             return _registerCompanyPresenter.ContentResult;
         }
-        
-        [HttpPatch]
-        public async Task<ActionResult> Update([FromBody] Models.Request.UpdateCompanyRequest request)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Models.Request.RegisterCompanyRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -76,8 +78,18 @@ namespace Teleperformance.Registration.Api.Controllers
             }
 
             await _updateCompanyUseCase.Handle(new UpdateCompanyRequest(
-                request.Id,
-                request.Company
+                id,
+                new RegisterCompanyRequest(
+                request.IdentificationType,
+                request.IdentificationNumber,
+                request.CompanyName,
+                request.FirstName,
+                request.SecondName,
+                request.FirstLastname,
+                request.SecondLastname,
+                request.Email,
+                request.SendMessage,
+                request.SendEmail)
             ), _updateCompanyPresenter);
 
             return _updateCompanyPresenter.ContentResult;

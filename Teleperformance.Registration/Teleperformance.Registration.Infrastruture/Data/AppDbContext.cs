@@ -21,7 +21,6 @@ namespace Teleperformance.Registration.Infrastruture.Data
 
         public void ConfigureCompany(EntityTypeBuilder<Company> builder)
         {
-            builder.Ignore(b => b.Email);
         }
 
         public DbSet<Company> Companies { get; set; }

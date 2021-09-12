@@ -15,5 +15,8 @@ namespace Teleperformance.Registration.Api.Models.Request
         public string FirstLastname { get; set; }
         public string SecondLastname { get; set; }
         public string Email { get; set; }
+        public bool SendMessage { get; set; }
+        public bool SendEmail { get; set; }
+
     }
 }

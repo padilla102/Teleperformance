@@ -9,12 +9,12 @@ namespace Teleperformance.Registration.Domain.Dto.UseCaseRequests
     public class UpdateCompanyRequest : IUseCaseRequest<UpdateCompanyResponse>
     {
         public int Id { get; set; }
-        public Company Company { get; set; }
+        public RegisterCompanyRequest Company { get; set; }
 
-        public UpdateCompanyRequest(int id, Company company)
+        public UpdateCompanyRequest(int id, RegisterCompanyRequest registerCompanyRequest)
         {
             Id = id;
-            Company = company;
+            Company = registerCompanyRequest;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Teleperformance.Registration.Domain.Dto.UseCaseRequests
         public string FirstLastname { get; set; }
         public string SecondLastname { get; set; }
         public string Email { get; set; }
+        public bool SendMessage { get; set; }
+        public bool SendEmail { get; set; }
 
         public RegisterCompanyRequest(
             int identificationType,
@@ -22,7 +24,9 @@ namespace Teleperformance.Registration.Domain.Dto.UseCaseRequests
             string secondName,
             string firstLastname,
             string secondLastname,
-            string email)
+            string email,
+            bool sendMessage,
+            bool sendEmail)
         {
             IdentificationType = identificationType;
             IdentificationNumber = identificationNumber;
@@ -32,6 +36,8 @@ namespace Teleperformance.Registration.Domain.Dto.UseCaseRequests
             FirstLastname = firstLastname;
             SecondLastname = secondLastname;
             Email = email;
+            SendMessage = sendMessage;
+            SendEmail = sendEmail;
         }
     }
 }

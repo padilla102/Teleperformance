@@ -6,11 +6,11 @@ namespace Teleperformance.Registration.Domain.Dto.UseCaseResponse
     public class RegisterCompanyResponse : UseCaseResponseMessage
     {
         public string Id { get; }
-        public IEnumerable<string> Errors { get; }
+        public Error Error { get; }
 
-        public RegisterCompanyResponse(IEnumerable<string> errors, bool success = false, string message = null) : base(success, message)
+        public RegisterCompanyResponse(Error error, bool success = false, string message = null) : base(success, message)
         {
-            Errors = errors;
+            Error = error;
         }
 
         public RegisterCompanyResponse(string id, bool success = false, string message = null) : base(success, message)

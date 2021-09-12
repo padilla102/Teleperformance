@@ -12,5 +12,7 @@ namespace Teleperformance.Registration.Domain.Entities
         public string FirstLastname { get; set; }
         public string SecondLastname { get; set; }
         public string Email { get; set; }
+        public bool SendMessage { get; set; }
+        public bool SendEmail { get; set; }
     }
 }
